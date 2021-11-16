@@ -1,4 +1,5 @@
 const URL = "http://cs.pugetsound.edu/~dchiu/cs240/api/simone/"
+const BTN_DURATION = 150;
 var running = false;
 //request solution
 //http://cs.pugetsound.edu/~dchiu/cs240/api/simone/?cmd=getSolution&rounds=4
@@ -95,7 +96,23 @@ function GameLoop(){
 async function getStartSequence(){
     try {
         let request = await axios.get("http://cs.pugetsound.edu/~dchiu/cs240/api/simone/?cmd=start");
-        console.log(request.data);
+        let sequence = request.data['sequence'];
+
+        // Play each  button BTN_DURATION ms apart
+        let i = sequence.length;
+        let j = 0;
+        function delayLoop() {
+            setTimeout(function() {
+                play(sequence[j]);
+                j++
+                if (j < i) {
+                    delayLoop();
+                }
+            }, BTN_DURATION)
+        }
+
+        delayLoop();
+
     } catch (error) {
         console.log(error);
     }
@@ -106,4 +123,42 @@ async function getStartSequence(){
  */
 function playStartSequence(sequence) {
 
+}
+
+/**
+ * Makes the specified button light up for BTN_DURATION seconds. 
+ * @param {*} button A
+ */
+function play(button) {
+    switch(button) {
+        case "R":
+            //Code
+            redSq.classList.add('lightred');
+            //playsound
+            setTimeout(function() {
+                redSq.classList.remove('lightred');
+            }, BTN_DURATION);
+            break;
+        case "G":
+            greenSq.classList.add('lightgreen');
+            //Code
+            setTimeout(function() {
+                greenSq.classList.remove('lightgreen');
+            }, BTN_DURATION);
+            break;
+        case "B":
+            blueSq.classList.add('lightblue');
+            //Code
+            setTimeout(function() {
+                blueSq.classList.remove('lightblue');
+            }, BTN_DURATION);
+            break;
+        case "Y":
+            yellowSq.classList.add('lightyellow');
+            //Code
+            setTimeout(function() {
+                yellowSq.classList.remove('lightyellow');
+            }, BTN_DURATION);
+            break;
+    }
 }
