@@ -1,6 +1,5 @@
 const URL = "http://cs.pugetsound.edu/~dchiu/cs240/api/simone/"
 const BTN_DURATION = 150;
-var running = false;
 //request solution
 //http://cs.pugetsound.edu/~dchiu/cs240/api/simone/?cmd=getSolution&rounds=4
 
@@ -81,24 +80,32 @@ yellowSq.addEventListener("mouseleave", function() {
     yellowSq.classList.remove('hover');
 })
 
+// Play Button
 var playBtn = document.getElementById("play");
 playBtn.addEventListener("click", function() {
     var numRounds = document.getElementById("rounds").value
-    console.log("Lets play " + numRounds + " rounds of Simone");
-    getStartSequence();
+    GameLoop();
 })
 
 
 function GameLoop(){
-    
+    console.log("Playing");
+    PlayStartSequence();
+
+
 }
 
-async function getStartSequence(){
+/**
+ *  Calls the server to get the start sequence. Then plays the
+ *  start sequence.  
+ */
+async function PlayStartSequence(){
+    // Get the play sequence from the API
     try {
         let request = await axios.get("http://cs.pugetsound.edu/~dchiu/cs240/api/simone/?cmd=start");
         let sequence = request.data['sequence'];
 
-        // Play each  button BTN_DURATION ms apart
+        // Play each button BTN_DURATION ms apart
         let i = sequence.length;
         let j = 0;
         function delayLoop() {
@@ -118,13 +125,6 @@ async function getStartSequence(){
     }
 }
 
-/*
- * Makes the game play the specified color sequence.
- */
-function playStartSequence(sequence) {
-
-}
-
 /**
  * Makes the specified button light up for BTN_DURATION seconds. 
  * @param {*} button A
@@ -132,7 +132,6 @@ function playStartSequence(sequence) {
 function play(button) {
     switch(button) {
         case "R":
-            //Code
             redSq.classList.add('lightred');
             //playsound
             setTimeout(function() {
@@ -141,21 +140,18 @@ function play(button) {
             break;
         case "G":
             greenSq.classList.add('lightgreen');
-            //Code
             setTimeout(function() {
                 greenSq.classList.remove('lightgreen');
             }, BTN_DURATION);
             break;
         case "B":
             blueSq.classList.add('lightblue');
-            //Code
             setTimeout(function() {
                 blueSq.classList.remove('lightblue');
             }, BTN_DURATION);
             break;
         case "Y":
             yellowSq.classList.add('lightyellow');
-            //Code
             setTimeout(function() {
                 yellowSq.classList.remove('lightyellow');
             }, BTN_DURATION);
